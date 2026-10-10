@@ -80,15 +80,19 @@ def run_mtk_unlock(output_callback=None):
 
 def run_g12nl_unlock(output_callback=None):
     """
-    G12NL 专用解锁 —— 仅执行解锁脚本，不做成功/失败判断。
-    解锁工具可能有 seccfg 写入失败等假报错，但实际 BL 已解锁，
-    所以这里只执行脚本并返回，由用户自行确认。
+    G12NL 专用解锁 —— 使用原版 mtkclient 调整参数解锁（G12NL解锁BL.bat）。
+    仅执行解锁脚本，不做成功/失败判断，由用户自行确认结果。
     :return: (returncode, stdout, stderr)
     """
-    bat_path = settings.UNLOCK_MTK_DIR / "解锁BL.bat"
+    bat_path = settings.MTKCLIENT_DIR / "G12NL解锁BL.bat"
+    if not bat_path.exists():
+        if output_callback:
+            output_callback(f"❌ 找不到解锁脚本: {bat_path}")
+            output_callback("请确认 tools/mtkclient-main/ 目录下有 G12NL解锁BL.bat")
+        return -1, "", f"找不到 {bat_path}"
     ret, out, err = run_bat(
         bat_path,
-        cwd=settings.UNLOCK_MTK_DIR,
+        cwd=settings.MTKCLIENT_DIR,
         interactive=False,
         output_callback=output_callback
     )
@@ -96,10 +100,21 @@ def run_g12nl_unlock(output_callback=None):
         output_callback("")
         output_callback("=" * 50)
         output_callback("💡 解锁命令已执行完成")
-        output_callback("💡 如果脚本中有 seccfg/wrong length 等报错，这是已知现象")
-        output_callback("💡 实际 BL 通常已成功解锁，请手动确认设备状态")
+        output_callback("💡 请检查设备状态，确认 BL 是否解锁成功")
         output_callback("=" * 50)
     return ret, out, err
+
+
+def open_mtk_g12nl_gui(output_callback=None):
+    """
+    G12NL 设备唤出 GUI —— 执行 mtk_gui-G12NL.bat
+    """
+    bat_path = settings.MTKCLIENT_DIR / "mtk_gui-G12NL.bat"
+    if not bat_path.exists():
+        if output_callback:
+            output_callback(f"❌ 找不到脚本: {bat_path}")
+        return -1, "", f"找不到 {bat_path}"
+    return run_bat(bat_path, cwd=settings.MTKCLIENT_DIR, interactive=False, output_callback=output_callback)
 
 
 def run_install_deps(output_callback=None):
