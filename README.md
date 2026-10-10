@@ -331,7 +331,16 @@ FxyToolbox/
 
 - **群友们** — 提供的 bug 日志和测试
 - 所有开源项目的贡献者们
-
+- 部分集成软件的开发者
 ---
 
 —— 派 蒙~  2026.10
+
+## 附：集成软件来源
+这些软件均来源于网络搜集，此处已经明确表明来源，如有侵权将第一时间删除。
+MTKClient https://github.com/bkerler/mtkclient
+展讯强解 https://github.com/TomKing062/CVE-2022-38694_unlock_bootloader/releases
+Lineage OS GSI https://sourceforge.net/projects/andyyan-gsi/
+Miku UI GSI https://github.com/xiaoleGun/treble_build_miku
+展讯公钥解锁 http://www.coolapk.com/u/3463951
+SPD_Dump https://github.com/iocodev/spd_dump/tree/main
