@@ -1,0 +1,28 @@
+# ============ FxyToolbox 核心依赖 ============
+# 工具箱主程序运行必需
+customtkinter>=5.2.0
+requests>=2.28.0
+py7zr>=0.20.0
+just_playback>=0.5.0
+Pillow>=9.0.0
+
+# ============ 可选依赖 ============
+# CTKFileDialog-plus（更美观的文件对话框，没装也能用，自动退回系统原生）
+CTkFileDialog-plus>=0.1.0
+
+# ============ 打包依赖（发布 EXE 时需要）============
+# pyinstaller>=6.0.0
+
+# ============ MTKClient 依赖（如果要从源码跑 mtkclient 的话）============
+# 注意：这些是 mtkclient 自己的依赖，工具箱通过 subprocess 调用 mtkclient
+# 所以只有你直接用 mtkclient 源码的时候才需要装
+# 通常用打包好的 tools/mtkclient-main 就行，不用装这些
+#
+# pyusb>=1.2.1
+# pyserial>=3.5
+# pycryptodomex>=3.15.0
+# capstone>=4.0.2
+# keystone-engine>=0.9.2
+# unicorn>=2.0.0
+# colorama>=0.4.5
+# PySide6>=6.4.0

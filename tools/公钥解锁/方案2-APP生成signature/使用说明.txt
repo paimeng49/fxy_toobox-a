@@ -1,0 +1,1 @@
+在任意安卓设备内安装此APP，在APP内输入脚本获取到的identifier_token，即可一键生成signature.bin文件。将其复制到脚本所在目录，运行解锁BL。

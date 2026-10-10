@@ -1,0 +1,2 @@
+w frp G12NL.bin
+reset fastboot
