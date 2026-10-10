@@ -16,6 +16,9 @@ class MtkPage(ctk.CTkFrame):
         self.open_gui_btn = ctk.CTkButton(self, text="打开 MTKClient 官方 GUI", font=("Arial", 14, "bold"), command=self.open_gui)
         self.open_gui_btn.pack(pady=10)
         
+        self.open_g12nl_gui_btn = ctk.CTkButton(self, text="G12NL 设备唤出 GUI", command=self.open_g12nl_gui)
+        self.open_g12nl_gui_btn.pack(pady=5)
+        
         self.install_deps_btn = ctk.CTkButton(self, text="安装MTK依赖库", command=self.install_deps)
         self.install_deps_btn.pack(pady=10)
         
@@ -64,6 +67,16 @@ class MtkPage(ctk.CTkFrame):
         if out: self.log(out)
         if err: self.log(err)
         self.log("GUI 已启动，若关闭窗口后日志停止输出，属正常现象。")
+    
+    def open_g12nl_gui(self):
+        self.log("正在启动 G12NL 版 MTKClient GUI...")
+        threading.Thread(target=self._open_g12nl_gui_thread, daemon=True).start()
+    
+    def _open_g12nl_gui_thread(self):
+        ret, out, err = mtk_tools.open_mtk_g12nl_gui(output_callback=self.log)
+        if out: self.log(out)
+        if err: self.log(err)
+        self.log("G12NL GUI 已启动，若关闭窗口后日志停止输出，属正常现象。")
     
     def install_deps(self):
         self.log("开始安装MTK依赖库...")
