@@ -11,8 +11,9 @@
 ---
 
 ## 项目简介
+### 注意：本项目使用AI辅助开发！
 
-FxyToolbox（扶小鹰工具箱）是一款面向学习机（扶小鹰、家教机等）和自用设备的刷机工具箱，集成了从解锁 Bootloader 到刷入 GSI 镜像的全流程操作。工具箱支持联发科（MTK）和展讯（SPD）两大平台，内置多种解锁方案，并提供一键刷机模式——解锁 + 刷机一条龙。
+FxyToolbox（扶小鹰工具箱）是一款面向扶鹰教育旗下的扶小鹰学习机的刷机工具箱，集成了从解锁 Bootloader 到刷入 GSI 镜像的全流程操作。工具箱支持联发科（MTK）和展讯（SPD）两大平台，内置多种解锁方案，并提供一键刷机模式——解锁 + 刷机一条龙。
 
 基于 CustomTkinter 构建的现代化 GUI，操作直观，小白也能上手。
 
@@ -21,7 +22,7 @@ FxyToolbox（扶小鹰工具箱）是一款面向学习机（扶小鹰、家教�
 ## 功能特性
 
 ### 📱 多平台支持
-- **联发科（MTK）**：G12NL 解锁（修改版工具）、通用解锁、MTKClient GUI
+- **联发科（MTK）**：解锁BL、集成MTKClient
 - **展讯（SPD）**：强解（CVE-2022-38694）、公钥解锁、分区读写备份、FDL2 引导
 
 ### 🚀 一键刷机
@@ -36,18 +37,11 @@ FxyToolbox（扶小鹰工具箱）是一款面向学习机（扶小鹰、家教�
 - 实时进度显示
 
 ### 🔧 其他功能
-- **自定义命令**：基于 mono-term 的内嵌终端，可直接执行 adb / fastboot / spd_dump / mtk 命令
+- **自定义命令**：直接执行 adb / fastboot / spd_dump / mtk 命令
 - **实用网站**：聚合 GSI 镜像、ROM 解包、刷机百科等常用网站
-- **驱动一键安装**：展讯 / 瑞芯微 INF 驱动、OPLUS ADB/Fastboot 全家桶、UsbDk、Python 与 MSVC 环境，静默安装 + 自动校验 + 已安装项自动跳过
+- **驱动一键安装**：MTK / 展讯 / ADB 驱动
 - **多镜像源切换**：GitHub 加速镜像，国内下载不再慢
 - **日志系统**：自动轮转，最多保留 20 个日志文件
-
-### 🎉 彩蛋
-- 启动音乐（可替换 `bgm.mp3`）
-- 启动画面（可替换 `splash.jpg`）
-- 随机副标题（可编辑 `subtitle.txt`）
-- 愚人节特别彩蛋
-- 植物大战僵尸小游戏
 
 ---
 
@@ -76,12 +70,9 @@ cd fxy_toobox-a
 #### 2. 安装 Python 依赖
 
 ```bash
-pip install customtkinter requests py7zr just_playback pillow CTkFileDialog-plus mono-term
+pip install customtkinter requests py7zr just_playback pillow CTkFileDialog-plus
 ```
 
-> **提示**：`CTkFileDialog-plus` 是可选的，没装也能用，会自动退回系统原生文件对话框。
->
-> `mono-term` 用于「自定义命令」页的内嵌终端（Windows 下会自动安装 pywinpty）。没装也能用，会自动退回「输入框 + 日志」模式。
 
 #### 3. 准备工具目录
 
@@ -174,17 +165,12 @@ FxyToolbox/
 
 ### 1. 安装驱动
 
-打开工具箱 → 「综合」页面 → 点击「一键安装全部驱动」。
+打开工具箱 → 「综合」页面 → 勾选需要的驱动 → 点击「一键安装所选驱动」。
 
-安装器会按顺序自动完成：
-- 展讯 / 瑞芯微 INF 驱动（pnputil 静默安装）
-- OPLUS ADB/Fastboot/高通/联发科 驱动全家桶
-- UsbDk 虚拟 USB 驱动
-- Python 3.14 运行环境
-- 绿色版 MSVC 工具链（最后一步，需联网下载，耗时较长）
-
-已安装过的组件会自动跳过；每项安装完成都会做真实校验，失败会自动重试一次。
-驱动安装需要管理员权限：若工具箱不是以管理员身份运行，点击后会自动询问是否以管理员身份重启。
+通常需要安装：
+- 展讯 USB 驱动（展讯设备）
+- MTK USB 驱动（联发科设备）
+- Google ADB/Fastboot 驱动
 
 ### 2. 选择镜像源
 
@@ -202,6 +188,7 @@ FxyToolbox/
 | MTK 通用解锁 | 联发科通用 | mtkclient 原版解锁 |
 | 展讯强解 | 展讯 T606/T616/T610/T618 | CVE-2022-38694 漏洞强制解锁，带修复功能 |
 | 展讯公钥解锁 | 展讯通用 | 公钥解锁脚本三步解锁 |
+| G12NL FRP 解锁 | 联发科 G12NL | 清除 FRP 锁定 |
 
 ### 4. 一键刷机
 
@@ -342,7 +329,6 @@ FxyToolbox/
 
 ## 致谢
 
-- **DeepSeek** — 写出了 v1.1 单文件版
 - **群友们** — 提供的 bug 日志和测试
 - 所有开源项目的贡献者们
 
