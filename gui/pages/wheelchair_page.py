@@ -50,7 +50,7 @@ class WheelchairPage(ctk.CTkFrame):
         self.unlock_var = ctk.StringVar(value="MTK通用解锁")
         self.unlock_menu = ctk.CTkOptionMenu(
             self.unlock_frame,
-            values=["MTK-G12NL解锁", "MTK通用解锁", "展讯强解", "展讯公钥解锁", "G12NL FRP解锁"],
+            values=["MTK-G12NL解锁", "MTK通用解锁", "展讯强解", "展讯公钥解锁"],
             variable=self.unlock_var,
             command=self._on_unlock_plan_change
         )
@@ -292,12 +292,6 @@ class WheelchairPage(ctk.CTkFrame):
                 if not self._enter_fbd_from_adb():
                     return
 
-            elif unlock_plan == "G12NL FRP解锁":
-                if not self._unlock_g12nl_frp():
-                    return
-                if not self._enter_fbd_from_frp():
-                    return
-
             elif unlock_plan == "展讯强解":
                 if not self._unlock_spd_force():
                     return
@@ -360,8 +354,8 @@ class WheelchairPage(ctk.CTkFrame):
     # ==================== 解锁方法 ====================
 
     def _unlock_mtk_g12nl(self):
-        """MTK G12NL 解锁"""
-        self.log("调用G12NL解锁脚本...")
+        """MTK G12NL 解锁（使用原先修改版工具 mtkclient-G12NL-UnlockTools）"""
+        self.log("调用 G12NL 修改版解锁工具（mtkclient-G12NL-UnlockTools）...")
         self.log("👉 请确保设备已进入 BROM 模式")
         self.log("👉 操作方法：关机状态下，长按音量减不放，同时插入数据线")
         ret, out, err = mtk_tools.run_g12nl_unlock(output_callback=self.log)
@@ -382,19 +376,6 @@ class WheelchairPage(ctk.CTkFrame):
             self.log(f"❌ MTK通用解锁失败（返回码: {ret}）")
             return False
         self.log("✅ MTK通用解锁完成")
-        return True
-
-    def _unlock_g12nl_frp(self):
-        """G12NL FRP 解锁"""
-        self.log("开始执行 G12NL FRP 解锁...")
-        self.log("👉 请确保设备已进入 BROM 模式")
-        self.log("👉 操作方法：关机状态下，长按音量减不放，同时插入数据线")
-        ret, msg = mtk_tools.run_g12nl_frp_unlock(output_callback=self.log)
-        self.log(msg)
-        if not ret:
-            self.log("❌ FRP 解锁失败")
-            return False
-        self.log("✅ FRP 解锁完成")
         return True
 
     def _unlock_spd_force(self):
@@ -526,50 +507,6 @@ class WheelchairPage(ctk.CTkFrame):
                 if get_is_userspace():
                     self.log("✅ Fastbootd 已连接")
                     return True
-            time.sleep(2)
-        self.log("❌ 未检测到 fastbootd")
-        return False
-
-    def _enter_fbd_from_frp(self):
-        """改FRP后：连点30次序列号→open→检测ADB→adb reboot bootloader→fastboot flashing unlock→fastboot reboot fastboot→fbd"""
-        if not self._wait_adb_open():
-            return False
-        self.log("正在重启到 bootloader (adb reboot bootloader)...")
-        subprocess.run("adb reboot bootloader", cwd=settings.PLATFORM_TOOLS, shell=True)
-        time.sleep(10)
-
-        # 等待 fastboot
-        self.log("等待 fastboot...")
-        for _ in range(15):
-            if get_device_mode() == "fastboot":
-                self.log("✅ Fastboot 已连接")
-                break
-            time.sleep(2)
-        else:
-            self.log("❌ 未检测到 fastboot")
-            return False
-
-        # fastboot flashing unlock
-        self.log("执行 fastboot flashing unlock ...")
-        result = subprocess.run(
-            "fastboot flashing unlock",
-            cwd=settings.PLATFORM_TOOLS, shell=True,
-            capture_output=True, text=True
-        )
-        if result.returncode == 0:
-            self.log("✅ 解锁成功")
-        else:
-            self.log(f"❌ 解锁失败: {result.stderr}")
-            return False
-
-        # fastboot reboot fastboot
-        self.log("重启到 fastbootd (fastboot reboot fastboot)...")
-        run_command("fastboot reboot fastboot", cwd=settings.PLATFORM_TOOLS)
-        time.sleep(10)
-        for _ in range(30):
-            if get_device_mode() == "fastboot" and get_is_userspace():
-                self.log("✅ Fastbootd 已连接")
-                return True
             time.sleep(2)
         self.log("❌ 未检测到 fastbootd")
         return False

@@ -1,4 +1,4 @@
-APP_VERSION = "2.0.0-rc2"
+APP_VERSION = "2.1-pre2"
 APP_NAME = "扶小鹰工具箱"
 AUTHOR = "派 蒙~"
 AUTHOR_EMAIL = "fdggydh@outlook.com"

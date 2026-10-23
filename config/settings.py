@@ -82,9 +82,6 @@ USEFUL_SITES = [
 # 默认使用第一个（即 GitHub 官方直连）
 ACTIVE_MIRROR = "GitHub官方直连"
 
-# G12NL FRP 文件
-G12NL_FRP_URL = "https://github.com/paimeng49/fuckwjhnmsl_tool_box_packages/releases/download/%E8%A7%A3%E9%94%81%E6%96%87%E4%BB%B6/G12NL.bin"
-
 # ===================== 展讯强解工具下载配置 =====================
 SPD_UNLOCK_TOOLS = {
     "T606/T616": {

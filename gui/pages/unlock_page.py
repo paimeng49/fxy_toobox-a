@@ -35,8 +35,7 @@ class UnlockPage(ctk.CTkFrame):
             "MTK-G12NL解锁",
             "MTK通用解锁",
             "展讯强解",
-            "展讯公钥解锁",
-            "G12NL FRP解锁"
+            "展讯公钥解锁"
         ], variable=self.plan_var, command=self._on_plan_change)
         self.plan_menu.pack(side="left", padx=10)
 
@@ -128,17 +127,17 @@ class UnlockPage(ctk.CTkFrame):
 
     def _run_unlock(self, plan):
         try:
-            watchdog_log = self._make_watchdog_log()
             if plan == "MTK-G12NL解锁":
-                self._run_mtk_g12nl_unlock(watchdog_log)
-            elif plan == "MTK通用解锁":
-                self._run_mtk_unlock(watchdog_log)
-            elif plan == "展讯强解":
-                self._run_spd_force_unlock(watchdog_log)
-            elif plan == "展讯公钥解锁":
-                self._run_spd_pubkey_unlock(watchdog_log)
-            elif plan == "G12NL FRP解锁":
-                self._run_g12nl_frp_unlock(watchdog_log)
+                # 修改版工具会假报错（seccfg write failure / Wrong length），不做错误监控
+                self._run_mtk_g12nl_unlock(self.log)
+            else:
+                watchdog_log = self._make_watchdog_log()
+                if plan == "MTK通用解锁":
+                    self._run_mtk_unlock(watchdog_log)
+                elif plan == "展讯强解":
+                    self._run_spd_force_unlock(watchdog_log)
+                elif plan == "展讯公钥解锁":
+                    self._run_spd_pubkey_unlock(watchdog_log)
         except Exception as e:
             self.log(f"❌ 解锁失败: {e}")
         finally:
@@ -149,7 +148,8 @@ class UnlockPage(ctk.CTkFrame):
     # ==================== MTK 解锁 ====================
 
     def _run_mtk_g12nl_unlock(self, log_cb=None):
-        self.log("调用 MTK G12NL 专属解锁脚本...")
+        self.log("调用 G12NL 修改版解锁工具（mtkclient-G12NL-UnlockTools）...")
+        self.log("👉 请确保设备已进入 BROM 模式")
         ret, out, err = mtk_tools.run_g12nl_unlock(output_callback=log_cb or self.log)
         if out: self.log(out)
         if err: self.log(err)
@@ -451,21 +451,6 @@ class UnlockPage(ctk.CTkFrame):
         log("执行 fastboot reboot 重启设备...")
         run_command("fastboot reboot", cwd=settings.PLATFORM_TOOLS)
         log("✅ 展讯公钥解锁流程完成，设备正在重启")
-
-    # ==================== G12NL FRP 解锁 ====================
-
-    def _run_g12nl_frp_unlock(self, log_cb=None):
-        log = log_cb or self.log
-        log("开始执行 G12NL FRP 解锁...")
-        log("请确保平板已进入 BROM 模式")
-        log("👉 操作方法：关机状态下，长按音量减不放，同时插入数据线")
-        ret, msg = mtk_tools.run_g12nl_frp_unlock(output_callback=log)
-        log(msg)
-        if ret:
-            log("✅ FRP 解锁执行完成")
-            log("下一步：请长按电源键手动开机")
-        else:
-            log("❌ FRP 解锁失败")
 
     # ==================== 工具方法 ====================
 

@@ -5,10 +5,16 @@ requests>=2.28.0
 py7zr>=0.20.0
 just_playback>=0.5.0
 Pillow>=9.0.0
+# 自定义命令页的内嵌终端（Windows 下会自动安装 pywinpty）
+mono-term>=0.35.0
 
 # ============ 可选依赖 ============
 # CTKFileDialog-plus（更美观的文件对话框，没装也能用，自动退回系统原生）
 CTkFileDialog-plus>=0.1.0
+
+# 驱动一键安装的弹窗自动点击兜底（装不上也不影响安装，只是少了无人值守能力）
+# pywinauto>=0.6.9
+# psutil>=5.9
 
 # ============ 打包依赖（发布 EXE 时需要）============
 # pyinstaller>=6.0.0

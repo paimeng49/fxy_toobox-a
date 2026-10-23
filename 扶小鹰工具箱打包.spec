@@ -21,6 +21,9 @@ third_party_libs = [
     'just_playback',
     'CTkFileDialog',   # CTKFileDialog-plus（安装后包名是 CTkFileDialog）
     'PIL',
+    'pywinauto',       # 驱动安装的弹窗自动点击兜底（可选，没装会自动跳过）
+    'mono',            # 自定义命令页的内嵌终端（mono-term）
+    'winpty',          # mono 在 Windows 下的 PTY 后端（含 winpty.dll / OpenConsole.exe）
 ]
 
 datas = []
@@ -52,6 +55,10 @@ project_modules = [
     'core.easter_eggs',
     'core.custom_cmd',
     'core.game_download',
+    'core.driver_installer',
+    'core.driver_installer.core',
+    'core.driver_installer.automator',
+    'core.driver_installer.msvc',
     # gui
     'gui.main_window',
     'gui.pages.home_page',
