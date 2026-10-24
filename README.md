@@ -70,7 +70,7 @@ cd fxy_toobox-a
 #### 2. 安装 Python 依赖
 
 ```bash
-pip install customtkinter requests py7zr just_playback pillow CTkFileDialog-plus
+pip3 install customtkinter requests py7zr just_playback pillow CTkFileDialog-plus mono-term
 ```
 
 
